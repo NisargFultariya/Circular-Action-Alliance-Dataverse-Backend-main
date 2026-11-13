@@ -1,0 +1,23 @@
+# Optional: lets Render auto-detect this service's settings ("Blueprint")
+# instead of you typing build/start commands into the dashboard by hand.
+# The env vars still need their real values set in the Render dashboard —
+# this file only declares that they exist, never their values.
+services:
+  - type: web
+    name: dataverse-table-builder-api
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /api/health
+    envVars:
+      - key: DATAVERSE_ENV_URL
+        sync: false
+      - key: DATAVERSE_TENANT_ID
+        sync: false
+      - key: DATAVERSE_CLIENT_ID
+        sync: false
+      - key: DATAVERSE_CLIENT_SECRET
+        sync: false
+      - key: ALLOWED_ORIGINS
+        sync: false

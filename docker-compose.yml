@@ -1,0 +1,14 @@
+services:
+  api:
+    build: .
+    restart: unless-stopped
+    ports:
+      - '8942:8942'
+    env_file:
+      - .env # must exist locally (copy .env.example -> .env with real values)
+    volumes:
+      - ./dataverse.py:/app/dataverse.py
+      - ./main.py:/app/main.py
+    # --reload picks up code edits without rebuilding the image — dev-only,
+    # remove for anything closer to production.
+    command: uvicorn main:app --host 0.0.0.0 --port 8942 --reload
